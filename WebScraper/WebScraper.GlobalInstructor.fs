@@ -4,26 +4,26 @@ open FSharp.Data
 
 [<RequireQualifiedAccess>]
 module GlobalInstructor =
-    
+
     type ProductSearchString = ProductSearchString of string
         with
             member private this.innerString =
                 match this with
                 | ProductSearchString str -> str
-            
+
             member this.BuildSearchString (concatChar : string) =
                 this.innerString.Split(' ')
-                |> Array.map (fun item -> item.Trim())
+                |> Array.map _.Trim()
                 |> Array.filter (fun item -> item.Length > 0)
                 |> String.concat concatChar
-    
-    
+
+
     type Item = {
         Description: string
         Price      : string
         LinkToItem : string
     }
-    
+
     type Instructor = {
         WebsiteURL      : string
         ResultListClass : string
@@ -35,7 +35,7 @@ module GlobalInstructor =
         with
             member private this.LoadA (product : ProductSearchString) =
                 HtmlDocument.AsyncLoad(this.WebsiteURL + "/" + product.BuildSearchString(this.ProductConcatCharacter))
-                
+
             member private this.ParseLoadedDocumentAL (product : ProductSearchString) =
                 async {
                     let! response = this.LoadA product
@@ -49,27 +49,25 @@ module GlobalInstructor =
                             }
                         )
                 }
-                
+
             member private this.saveToCSV_A (fileName : string) (items : Item list) =
-                
+
                 let headers = "Description\tPrice\tLinkToItem"
-                
-                let itemDateCsv = 
+
+                let itemDateCsv =
                     items
                     |> List.map (fun item -> $"{item.Description}\t{item.Price}\t{item.LinkToItem}")
                     |> String.concat "\n"
-                    
+
                 let csv = $"{headers}\n{itemDateCsv}"
-                
+
                 let sourceDirectory = System.IO.Directory.GetCurrentDirectory()
                 let filePath = System.IO.Path.Combine(sourceDirectory, fileName)
                 System.IO.File.WriteAllTextAsync (filePath, csv)
                 |> Async.AwaitTask
-                
+
             member this.LoadAndSaveToCsvFileA (productSearchString : string) (fileName : string) =
                 async {
                     let! items = this.ParseLoadedDocumentAL (ProductSearchString productSearchString)
                     do! this.saveToCSV_A fileName items
                 }
-                
-

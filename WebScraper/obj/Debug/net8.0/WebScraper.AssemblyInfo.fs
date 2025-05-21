@@ -10,7 +10,7 @@ open System.Reflection
 [<assembly: System.Reflection.AssemblyCompanyAttribute("WebScraper")>]
 [<assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")>]
 [<assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")>]
-[<assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")>]
+[<assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7d020893fe71b19d928b800dbf0c97c73898d68a")>]
 [<assembly: System.Reflection.AssemblyProductAttribute("WebScraper")>]
 [<assembly: System.Reflection.AssemblyTitleAttribute("WebScraper")>]
 [<assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")>]
